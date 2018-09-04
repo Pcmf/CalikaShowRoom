@@ -1,0 +1,227 @@
+<div class="container-fluid">
+	
+<h3 class="text-info text-center" style="margin-top:0px;">{{tema.nome}} - {{modelo.nome}} - Ref:{{modelo.refinterna}}</h3>
+    <div class="row">
+        <!-- This column is used to show small pics and reference form model in this order-->
+        <div class="col-xs-4 col-md-1" style="height: 100%; overflow-y:scroll; border-right: #204d74 double thick">
+            <h5 class="text-center text-primary">Modelos</h5>
+            <div class="small-pics" ng-repeat="mPic in modelsPics" ng-click="changeModel(mPic.id)">
+                <img class="" ng-src="../Calika/img/modelos/{{mPic.mainimg}}" style="width:80%" alt="mPic.ref"/>
+                <h6>{{mPic.refinterna}}</h6>
+            </div>
+            <br/><br/>
+            
+        </div>
+        
+        <!-- load an array, first with the mainimg and then the others -->
+        <div class="col-xs-8 col-md-4" style="border-right: #204d74 double thick">
+            <div class="moldura" ng-click="showBigPic(bigPic)">
+                <img ng-src="{{bigPic}}" alt="Imagem" style="height: 90%;max-width: 99%" />
+            </div>
+             <div class="miniaturas">
+                <div>
+                    <img ng-repeat="slide in slides"  ng-click="changeBigPic(slide)" style="max-height: 100px;float: left" class="thumbnail" ng-src="{{slide.url}}" alt="{{slide.name}}"/>
+                </div>
+            </div>
+            <button class="btn btn-block btn-success" ng-click="finalize()">Finalizar</button>
+        </div>
+
+        <!-- Definitions --> 
+        <div class="col-xs-12 col-md-7">
+            <!-- Descrição do Modelo-->
+            <div class="" id="descricaoModelo">
+                <div class="form-group">
+                    <label>Descrição do modelo:</label>
+                <textarea class="form-control" cols="80" rows="3" readonly="">{{modelo.descricao}}</textarea>
+                </div>
+            </div>
+
+            <!-- table lines with qty by model/color-->
+            <h4>Cores, elementos e quantidades.
+                <button class="btn btn-info" ng-click="addColorsnElem()"><i class="fa fa-plus"></i> Adicionar Cor / elementos</button>
+            </h4>
+            <div class="">
+                <table id="CEQTable" class="table table-condensed table-bordered">
+                    <thead>
+                        <tr>
+                            
+                            <th>Cor 1</th>
+                            <th>Cor 2</th>
+                            <th>Elem 1</th>
+                            <th>Elem 2</th>
+                            <th>Elem 3</th>
+                            <th ng-repeat="esc in escala">{{esc}}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="ln in detLines">
+                            
+                            <td ng-click="editColor(ln,'cor1')">{{ln.cor1.nome}}</td>
+                            <td ng-click="editColor(ln,'cor2')">{{ln.cor2.nome}}</td>
+                            <td ng-click="editElement(ln,'elem1')">{{ln.elem1.elemento.nome}}<br/>{{ln.elem1.corElem.nome}}</td>
+                            <td ng-click="editElement(ln,'elem2')">{{ln.elem2.elemento.nome}}<br/>{{ln.elem2.corElem.nome}}</td>
+                            <td ng-click="editElement(ln,'elem3')">{{ln.elem3.elemento.nome}}<br/>{{ln.elem3.corElem.nome}}</td>
+                            <td ng-repeat="esc in escala track by esc">
+                                <input type="text" class="number" ng-model="ln.qtys[esc]" ng-value="{{ln.qtys[esc]}}" style="width: 100%" ng-change="updateQty(ln)"/>
+                            </td>
+                            <td><button class="btn btn-sm btn-danger" ng-click="removeColorElemQty(ln)"><i class="fa fa-trash-o"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                    <table id="infoPriceTable" class="table table-bordered text-center">
+                    <thead class="bg-info">
+                        <tr>
+                            <th>Preço Unitário</th>
+                            <th>Quantidade</th>
+                            <th>Valor Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" ng-model="priceUnit" style="width: 60px" ng-change="updatePrice(priceUnit,modelo.id)"/></td>
+                            <td>{{qtyTotal}}</td>
+                            <td>{{qtyTotal * priceUnit}} €</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Espaço para escrever as observaçoes -->
+            <div class="form-group" id="obsCliente" style="clear: right">
+                <label>Observações</label>
+                <textarea class="form-control" cols="80" rows="5" ng-model="modelo.obscliente" ng-blur="saveObs()"></textarea>
+            </div>
+            
+            <!-- Etiquetas por tamanho -->
+            
+            <button class="btn btn-info btn-block"><i class="fa fa-save"></i> Guardar</button>
+            
+    </div>       
+		
+</div>
+
+<!-- Modal to show big picture  -->
+<script type="text/ng-template" id="modalShowBigPic.html" ng-controller="modalInstanceShowBigPic"> 
+<div class="modal-body">
+    
+    <img ng-src="{{imagem}}" style="width:90%" alt=""/>
+   
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="closeModal()">Fechar</button>
+</div>
+</script>
+
+
+<!-- Modal for adding colors and elements  -->
+<script type="text/ng-template" id="modalAddColorsnElems.html" ng-controller="modalInstanceAddColorsnElem"> 
+<div class="modal-header">
+    <!-- Select colors and elements -->
+    <h4>Seleção de cores e elementos</h4>
+   
+</div>
+<div class="modal-body">
+    <div class="form-inline">
+        <label>Côr principal:</label>
+        <select class="form-control" style="width: 160px" ng-model="cor1" ng-options="cor.nome for cor in cores track by cor.id"></select>
+    </div>
+    <div class="form-inline">
+        <label>Côr secundaria (opcional):</label>
+        <select class="form-control" style="width: 160px" ng-model="cor2" ng-options="cor.nome for cor in cores track by cor.id"></select>
+    </div>
+        <br/><br/>
+        <div class="form-inline" id="elem1"  ng-show="elmShow[0]">
+            <button class="btn btn-default btn-sm" title="Remover Elemento" ng-click="removeElem('e1')"><i class="fa fa-minus"></i></button>
+            <label>Elemento (opcional):</label>
+            <select class="form-control" ng-model="e1.elemento" ng-options="elemento.nome for elemento in elementos track by elemento.id"></select>
+            <button class="btn btn-info btn-sm" title="Criar novo elemento"><i class="fa fa-plus"></i></button>
+            <label>Côr (opcional):</label>
+            <select class="form-control" ng-model="e1.corElem" ng-options="corElem.nome for corElem in cores track by corElem.id"></select>
+        </div>
+        <br/>
+        <div class="form-inline" id="elem2" ng-show="elmShow[1]">
+            <button class="btn btn-default btn-sm" title="Remover Elemento" ng-click="removeElem('e2')"><i class="fa fa-minus"></i></button>
+            <label>Elemento (opcional):</label>
+            <select ng-model="e2.elemento" ng-options="elemento.nome for elemento in elementos track by elemento.id"></select>
+            <button class="btn btn-info btn-sm" title="Criar novo elemento"><i class="fa fa-plus"></i></button>
+            <label>Côr (opcional):</label>
+            <select ng-model="e2.corElem" ng-options="corElem.nome for corElem in cores track by corElem.id"></select>
+        </div>
+        <br/>
+        <div class="form-inline" id="elem3" ng-show="elmShow[2]">
+            <button class="btn btn-default btn-sm" title="Remover Elemento" ng-click="removeElem('e3')"><i class="fa fa-minus"></i></button>
+            <label>Elemento (opcional):</label>
+            <select ng-model="e3.elemento" ng-options="elemento.nome for elemento in elementos track by elemento.id"></select>
+            <button class="btn btn-info btn-sm" title="Criar novo elemento"><i class="fa fa-plus"></i></button>
+            <label>Côr (opcional):</label>
+            <select ng-model="e3.corElem" ng-options="corElem.nome for corElem in cores track by corElem.id"></select>
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-info" ng-click="addNewElement()">Adicionar outro elemento</button>
+            <button class="btn btn-success" ng-click="saveLine(tm.tq)">Guardar</button>
+            <button class="btn btn-warning" ng-click="closeModal()">Cancelar</button>
+        </div>         
+    </div>
+</script>
+
+
+<!--Modal to edit color -->
+<script type="text/ng-template" id="modalEditColor.html" ng-controller="modalInstanceEditColor"> 
+<div class="modal-header">
+    <!-- Select colors and elements -->
+    <h4>Seleção de cores e elementos</h4>
+   
+</div>
+<div class="modal-body">
+    <div class="form-inline">
+        <button class="btn btn-default btn-sm" title="Remover cor" ng-click="removeColor()"><i class="fa fa-minus"></i></button>
+        <label>Côr:</label>
+        <select class="form-control" style="width: 160px" ng-model="cor" ng-selected="cor" ng-options="cor.nome for cor in cores track by cor.id"></select>
+    </div>
+    <br/><br/>
+    <div class="text-center">
+        <button class="btn btn-success" ng-click="saveColor(cor)">Guardar</button>
+        <button class="btn btn-warning" ng-click="closeModal()">Cancelar</button>
+    </div>   
+</div>
+</script>
+
+<!--Modal to edit element  -->
+<script type="text/ng-template" id="modalEditElement.html" ng-controller="modalInstanceEditElement"> 
+<div class="modal-header">
+    <!-- Select colors and elements -->
+    <h4>Seleção de elementos e cor</h4>
+   
+</div>
+<div class="modal-body">
+        <div class="form-inline">
+            <button class="btn btn-default btn-sm" title="Remover Elemento" ng-click="removeElem()"><i class="fa fa-minus"></i></button>
+            <label>Elemento (opcional):</label>
+            <select class="form-control" ng-model="e.elemento" ng-selected="elemento" ng-options="elemento.nome for elemento in elementos track by elemento.id"></select>
+            <button class="btn btn-info btn-sm" title="Criar novo elemento"><i class="fa fa-plus"></i></button>
+            <label>Côr (opcional):</label>
+            <select class="form-control" ng-model="e.corElem" ng-selected="corElem" ng-options="corElem.nome for corElem in cores track by corElem.id"></select>
+     </div>
+    <br/><br/>
+    <div class="text-center">
+        <button class="btn btn-success" ng-click="saveElement(e)">Guardar</button>
+        <button class="btn btn-warning" ng-click="closeModal()">Cancelar</button>
+    </div>   
+</div>
+</script>
+
+<!--Modal to Ask if want send copy to client -->
+<script type="text/ng-template" id="modalPDF.html" ng-controller="modalInstancePDF"> 
+<div class="modal-header">
+    <!-- Select colors and elements -->
+    <h4>Finalizar Pedido</h4>  
+</div>
+<div class="modal-body">
+    <button class="btn btn-block btn-info" ng-click="sendPDFtoClient()"><span class="fa fa-envelope"> Enviar copia para Cliente.</span>
+    <button class="btn btn-block btn-success" ng-click="dontSend()">Fechar sem enviar.</button>
+    <button class="btn btn-block btn-warning" ng-click="closeModal()">Cancelar</button>
+</div>
+</script>

@@ -1,0 +1,57 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 30/nov/2017, 15:42:00
+    Author     : AsusE2
+*/
+
+.logotipo{
+	max-height: 30px;
+}
+
+.divTab{
+    height:300px;
+    overflow: scroll;
+}
+
+
+/* Modals */
+.closeModal{
+    width: 40px;
+    float: right;
+}
+
+label{
+    margin-left: 20px;
+}
+
+/* modelos */
+.moldura{
+    width: 98%;
+    height: 400px;
+    margin: auto;
+    border: #1b6d85 groove 2px;
+    text-align: center;
+}
+.miniaturas{
+    width: 100%;
+    height: 125px;
+    overflow-x: scroll;
+    overflow-y: hidden;      
+}
+.imgSmall{
+    max-height: 40px;
+    max-width: 60px;
+}
+
+#CEQTable{
+    font-size: small;
+}
+#infoPriceTable{
+    width: 40%;
+    float: right;
+    font-size: small;
+}

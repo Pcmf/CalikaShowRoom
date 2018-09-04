@@ -1,0 +1,8 @@
+<div>
+<label>Elemento (opcional):</label>
+<select ng-model="e.elemento" ng-options="elemento.nome for elemento in elementos track by elemento.id" ng-change="showSelectColor(elemento)"></select>
+<div ng-show="showColorElem">
+    <label>Côr (opcional):</label>
+    <select ng-model="e.corElem" ng-options="corElem.nome for corElem in cores track by corElem.id"></select>
+</div>
+</div>

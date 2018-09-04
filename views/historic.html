@@ -1,0 +1,42 @@
+<div class="container">
+    <h2 class="text-center text-info">Histórico dos pedidos</h2>
+    <br/>
+    <!-- Tabela com a lista dos pedidos -->
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Tema</th>
+                        <th>Numero</th>
+                        <th>Ref do Cliente</th>
+                        <th>Data do Pedido</th>
+                        <th>Estado</th>
+                        <th>Data da Situação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="p in pedidos">
+                        <td>
+                            <img class="imgSmall" ng-src="../Calika/img/{{p.folder}}/{{p.imagem}}" alt="tema"/>
+                        </td>
+                        <td>{{p.tema}}</td>
+                        <td>{{p.ref}}</td>
+                        <td>{{p.refCliente}}</td>
+                        <td>{{p.dataPedido}}</td>
+                        <td>{{p.status}}</td>
+                        <td>{{p.dataSituacao}}</td>
+                        <td>
+                            <a ng-show="p.situacao > 3" href="#!/modelo/{{p.idTema}}" class="btn btn-info"><span class="fa fa-eye"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2 class="text-center text-info" ng-show="pedidos==''">Não existem dados!</h2>
+        </div>
+    </div>
+    
+    
+</div>

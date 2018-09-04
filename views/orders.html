@@ -1,0 +1,36 @@
+<div class="container">
+    <h2 class="text-center text-info">Listagem de pedidos</h2>
+    <br/>
+    <!-- Tabela com a lista dos pedidos -->
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Numero</th>
+                        <th>Ref do Cliente</th>
+                        <th>Tema</th>
+                        <th>Data do Pedido</th>
+                        <th>Estado</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="p in pedidos">
+                        <td>{{p.ref}}</td>
+                        <td>{{p.refCliente}}</td>
+                        <td>{{p.tema}}</td>
+                        <td>{{p.dataPedido}}</td>
+                        <td>{{p.status}}</td>
+                        <td>
+                            <a ng-show="p.situacao == 2" href="#!/modelo/{{p.id}}" class="btn btn-info"><span class="fa fa-eye"></span></a>
+                            <a ng-show="p.situacao == 3" class="btn btn-warning"><span class="fa fa-hourglass-half"></span> </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+</div>

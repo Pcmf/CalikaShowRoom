@@ -1,0 +1,53 @@
+<div class="container" style="width: 600px" id="element-to-print">
+        
+             
+            <h3>{{modelo.nome}}</h3>
+            
+            <img ng-src="../calika/img/modelos/{{modelo.mainimg}}" alt="Imagem do modelo"/>
+               
+            <div class="container">
+            <table class="table table-condensed table-bordered" style="max-width: 400px">
+                <thead class="bg-info">
+                    <tr>
+                        <th>Cor 1</th>
+                        <th>Cor 2</th>
+                        <th>Elem 1</th>
+                        <th>Elem 2</th>
+                        <th>Elem 3</th>
+                        <th ng-repeat="esc in escala">{{esc}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ln in detLines">
+
+                        <td>{{ln.cor1.nome}}</td>
+                        <td>{{ln.cor2.nome}}</td>
+                        <td>{{ln.elem1.elemento.nome}}<br/>{{ln.elem1.corElem.nome}}</td>
+                        <td>{{ln.elem2.elemento.nome}}<br/>{{ln.elem2.corElem.nome}}</td>
+                        <td>{{ln.elem3.corElem.nome}}<br/>{{ln.elem3.corElem.nome}}</td>
+                        <td ng-repeat="esc in escala track by esc">{{ln.qtys[esc]}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+                <table class="table table-bordered text-center" style="width:300px">
+                    <thead class="bg-info">
+                        <tr>
+                            <th>Preço Unitário</th>
+                            <th>Quantidade</th>
+                            <th>Valor Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{priceUnit}}</td>
+                            <td>{{qtyTotal}}</td>
+                            <td>{{qtyTotal * priceUnit}} €</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            </div>
+    
+</div>
+<button class="btn btn-danger" ng-click="imprimir()"><i class="fa fa-print"></i> Imprimir</button>

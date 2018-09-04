@@ -1,0 +1,27 @@
+<div class="container">
+	<h2>Detalhe do pedido: <span class="text-primary">{{pedido.ref}} </span> - Tema: <span class="text-primary">{{pedido.tema}} </span>
+        <img style="max-height: 50px" ng-src="../Calika/img/{{tema.folder}}/{{tema.imagem}}">
+     </h2>
+
+	<div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Ref</th>
+                    <th>Modelo</th>
+                    <th>Imagem</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="mod in modelos">
+                    <td>{{mod.refinterna}}</td>
+                    <td>{{mod.nome}}</td>
+                    <td><img ng-src="../Calika/img/{{mod.pasta}}/{{mod.mainimg}}" style="max-height: 80px" alt="Foto"/></td>
+                    <td><a class="btn btn-info" href="#!/modelo/{{mod.id}}"><i class="fa fa-pencil"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>	
+
+</div>
